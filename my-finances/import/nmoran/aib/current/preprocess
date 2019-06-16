@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+"""
+Script to preprocess csv files exported from AIB current accounts
+
+Removes superfluous rows leaving only transaction rows. An improvement would
+be to extract additional descriptive information in the additional rows and add to
+transaction rows
+"""
+
+import sys
+import csv
+import pandas as pd
+
+def demoronize(inputfile, outputfile):
+    df = pd.read_csv(inputfile)
+    df = df[df['Transaction Type'].isin(['Debit', 'Credit'])]
+    df.to_csv(outputfile, index=False) 
+
+def parse_args(args):
+    if len(args) < 2:
+        usage = "USAGE: {0} statement.csv [output.csv]".format(os.path.basename(args[0]))
+        print(usage, file=sys.stderr)
+        sys.exit(1)
+    else:
+        inputfile = open(args[1])
+        if len(args) == 2 or args[2] == '-':
+            outputfile = sys.stdout
+        else:
+            outputfile = open(args[2], 'w')
+        return inputfile, outputfile
+
+
+if __name__ == '__main__':
+    inputfile, outputfile = parse_args(sys.argv)
+    demoronize(inputfile, outputfile)

@@ -1,0 +1,10 @@
+skip 1
+
+fields _, date, desc, amount-out, amount-in, balance, _
+
+status *
+date-format %d/%m/%y
+currency EUR
+
+account1 Assets:Current:AIB:Current
+description %desc
